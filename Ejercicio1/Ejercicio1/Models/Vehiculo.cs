@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Ejercicio1.Models
 {
-    public class Vehiculo: IExportable
+    public class Vehiculo: IExportable, IComparable
     {
-        public string Patente;
-        public double Importe;
+        public string Patente { get; private set; }
+        public double Importe { get; private set; }
 
         public Vehiculo(){}
 
@@ -40,7 +40,20 @@ namespace Ejercicio1.Models
         {
             return $"{Patente}  ${Importe}\r\n";
         }
+        public void AgregarMulta(double importe)
+        {
+            this.Importe += importe;
+        }
 
-    
+        public int CompareTo(object? obj)
+        {
+            Vehiculo vehiculo = obj as Vehiculo;
+            if (vehiculo != null)
+            {
+                return Patente.CompareTo(vehiculo.Patente);
+            }
+
+            return -1;
+        }
     }
 }

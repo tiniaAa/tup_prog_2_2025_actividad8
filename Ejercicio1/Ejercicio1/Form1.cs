@@ -15,7 +15,7 @@ namespace Ejercicio1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
 
             //string path = "unArchivo.csv";
             //string[] lines = File.ReadAllLines(path);
@@ -27,59 +27,101 @@ namespace Ejercicio1
             //}
 
 
-                OpenFileDialog dialog = new OpenFileDialog();
-                
-                dialog.Filter = "Archivo CSV|*.csv|Todos los archivos|*.*";
+            OpenFileDialog dialog = new OpenFileDialog();
 
-                if (dialog.ShowDialog() == DialogResult.OK)
+            dialog.Filter = "Archivo CSV|*.csv|Todos los archivos|*.*";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string name = dialog.FileName;
+                FileStream fs = null;
+                StreamReader sr = null;
+
+                try
                 {
-                    string name = dialog.FileName;
-                    FileStream fs = null;
-                    StreamReader sr = null; 
+                    fs = new FileStream(name, FileMode.Open, FileAccess.Read);
+                    sr = new StreamReader(fs);
+                    sr.ReadLine();
 
-                    try
+                    while (sr.EndOfStream != true)
                     {
-                        fs = new FileStream(name, FileMode.Open, FileAccess.Read);
-                        sr = new StreamReader(fs);
-                        sr.ReadLine();
+                        string cadena = sr.ReadLine().Trim();
 
-                        while (sr.EndOfStream != true)
+
+                        Vehiculo vehiculo = new Vehiculo();
+                        vehiculos.Sort();
+                        vehiculo.importar(cadena);
+                        int idx = vehiculos.BinarySearch(vehiculo);
+                        if (idx>=0)
                         {
-                            string cadena = sr.ReadLine().Trim();
-                         
-
-                            Vehiculo vehiculo = new Vehiculo();
-                            vehiculo.importar(cadena);
-                            vehiculos.Add(vehiculo);
-
-
+                            vehiculos[idx].AgregarMulta(vehiculo.Importe);
                         }
-                        foreach (Vehiculo v in vehiculos)
-                        {
-                            textBox1.Text += v.ToString();
-
-                        }
+                        else { vehiculos.Add(vehiculo); }
 
 
                     }
-                    catch (PatenteExeptio p)
+                    textBox1.Text = " ";
+                    foreach (Vehiculo v in vehiculos)
                     {
-                    MessageBox.Show(p.Message,"ERROR",MessageBoxButtons.OK, MessageBoxIcon.Error );
-                    }
-                    catch (Exception ex ) 
-                    {
-                        MessageBox.Show(ex.Message,"ERROR",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                    }
-                    finally
-                    {
-                        if (sr != null) sr.Close();
-                        if (fs != null) fs.Close();
+                        textBox1.Text += v.ToString();
+
                     }
 
-                   
 
                 }
-            
+                catch (PatenteExeptio p)
+                {
+                    MessageBox.Show(p.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    if (sr != null) sr.Close();
+                    if (fs != null) fs.Close();
+                }
+
+
+
+            }
+
+        }
+
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Archivo CSV |*.csv| Todos los archivos|*.*";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                string nombre = sfd.FileName;
+
+                FileStream fs = null;
+                StreamWriter sw = null;
+
+                try
+                {
+                    fs = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.Write);
+                    sw = new StreamWriter(fs);
+
+                    foreach (Vehiculo v in vehiculos)
+                    {
+                        string cadena = v.Exportar();
+                        sw.WriteLine(cadena);
+                    }
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                finally
+                {
+                    if (sw != null) sw.Close();
+                    if (fs != null) fs.Close();
+                }
+
+
+            }
         }
     }
 }

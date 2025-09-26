@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Importar = new Button();
-            textBox1 = new TextBox();
             button1 = new Button();
+            textBox1 = new TextBox();
+            button2 = new Button();
             SuspendLayout();
             // 
-            // Importar
+            // button1
             // 
-            Importar.Location = new Point(383, 56);
-            Importar.Name = "Importar";
-            Importar.Size = new Size(140, 76);
-            Importar.TabIndex = 0;
-            Importar.Text = "Importar";
-            Importar.UseVisualStyleBackColor = true;
-            Importar.Click += button1_Click;
+            button1.Location = new Point(383, 56);
+            button1.Name = "button1";
+            button1.Size = new Size(140, 76);
+            button1.TabIndex = 0;
+            button1.Text = "Importar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox1
             // 
@@ -51,23 +51,24 @@
             textBox1.Size = new Size(301, 284);
             textBox1.TabIndex = 1;
             // 
-            // button1
+            // button2
             // 
-            button1.Location = new Point(433, 224);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            button2.Location = new Point(383, 186);
+            button2.Name = "button2";
+            button2.Size = new Size(140, 73);
+            button2.TabIndex = 2;
+            button2.Text = "Exportar";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click_1;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(614, 313);
-            Controls.Add(button1);
+            Controls.Add(button2);
             Controls.Add(textBox1);
-            Controls.Add(Importar);
+            Controls.Add(button1);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
@@ -76,8 +77,8 @@
 
         #endregion
 
-        private Button Importar;
-        private TextBox textBox1;
         private Button button1;
+        private TextBox textBox1;
+        private Button button2;
     }
 }
